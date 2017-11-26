@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 public class MainActivity extends AppCompatActivity {
 
     private Paint mPaint;
+    private DrawingView dv;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,12 +28,13 @@ public class MainActivity extends AppCompatActivity {
         mPaint = new Paint();
         mPaint.setAntiAlias(true);
         mPaint.setDither(true);
-        mPaint.setColor(Color.GREEN);
+        mPaint.setColor(Color.BLUE);
         mPaint.setStyle(Paint.Style.STROKE);
         mPaint.setStrokeJoin(Paint.Join.ROUND);
         mPaint.setStrokeCap(Paint.Cap.ROUND);
         mPaint.setStrokeWidth(12);
-        content.addView(new DrawingView(this, mPaint));
+        dv = new DrawingView(this, mPaint);
+        content.addView(dv);
 
     }
 
@@ -52,6 +54,12 @@ public class MainActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            return true;
+        }else if (id == R.id.action_undo) {
+            dv.undo();
+            return true;
+        }else if (id == R.id.action_redo) {
+            dv.redo();
             return true;
         }
 

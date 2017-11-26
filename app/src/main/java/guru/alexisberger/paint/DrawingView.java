@@ -7,8 +7,11 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+
+import java.util.Stack;
 
 /**
  * Created by alexi on 25/11/2017.
@@ -27,6 +30,9 @@ public class DrawingView extends View {
     private Paint circlePaint;
     private Path circlePath;
 
+    private Stack<Bitmap> undo;
+    private Stack<Bitmap> redo;
+
     public DrawingView(Context c, Paint mPaint) {
         super(c);
         context=c;
@@ -40,6 +46,10 @@ public class DrawingView extends View {
         circlePaint.setStyle(Paint.Style.STROKE);
         circlePaint.setStrokeJoin(Paint.Join.MITER);
         circlePaint.setStrokeWidth(4f);
+
+        undo = new Stack<>();
+        redo = new Stack<>();
+
     }
 
     @Override
@@ -63,6 +73,7 @@ public class DrawingView extends View {
     private static final float TOUCH_TOLERANCE = 4;
 
     private void touch_start(float x, float y) {
+        undo.push(Bitmap.createBitmap(mBitmap));
         mPath.reset();
         mPath.moveTo(x, y);
         mX = x;
@@ -87,8 +98,12 @@ public class DrawingView extends View {
         circlePath.reset();
         // commit the path to our offscreen
         mCanvas.drawPath(mPath,  mPaint);
+
+        redo.removeAllElements();
+
         // kill this so we don't double draw
         mPath.reset();
+
     }
 
     @Override
@@ -112,4 +127,26 @@ public class DrawingView extends View {
         }
         return true;
     }
+
+    public void undo(){
+        if(undo.empty())
+            return;
+        Bitmap p = undo.pop();
+        redo.push(Bitmap.createBitmap(mBitmap));
+        mBitmap = p;
+        mCanvas = new Canvas(mBitmap);
+        invalidate();
+
+    }
+    public void redo(){
+        if(redo.empty())
+            return;
+        Bitmap p = redo.pop();
+        undo.push(Bitmap.createBitmap(mBitmap));
+        mBitmap = p;
+        mCanvas = new Canvas(mBitmap);
+        invalidate();
+
+    }
+
 }
