@@ -30,7 +30,11 @@ public class DrawingView extends View {
     Paint mPaint;
     private Paint circlePaint;
     private Path circlePath;
-
+    private int background_a;
+    private int background_r;
+    private int background_g;
+    private int background_b;
+    private int color;
     private Stack<Bitmap> undo;
     private Stack<Bitmap> redo;
 
@@ -158,11 +162,15 @@ public class DrawingView extends View {
     }
 
     public void clean(){
-        mCanvas.drawColor(0, PorterDuff.Mode.CLEAR);
-
+        //mCanvas.drawColor(0, PorterDuff.Mode.CLEAR);
+        mCanvas.drawARGB(background_a, background_r, background_g, background_b);
     }
 
     public void setBackground(int a, int r, int g, int b){
+        background_a = a;
+        background_r = r;
+        background_g = g;
+        background_b = b;
         mCanvas.drawARGB(a,r,g,b);
     }
 
