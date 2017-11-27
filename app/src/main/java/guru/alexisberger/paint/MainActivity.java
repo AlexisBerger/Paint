@@ -1,5 +1,6 @@
 package guru.alexisberger.paint;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Bundle;
@@ -65,6 +66,8 @@ public class MainActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
+            startActivity(intent);
             return true;
         }else if (id == R.id.action_undo) {
             dv.undo();
@@ -76,6 +79,11 @@ public class MainActivity extends AppCompatActivity {
 
             colorPicker.show();
 
+            return true;
+        }
+        else if (id == R.id.action_clean)
+        {
+            dv.clean();
             return true;
         }
 

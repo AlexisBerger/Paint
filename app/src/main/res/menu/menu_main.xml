@@ -22,4 +22,9 @@
         android:orderInCategory="100"
         android:title="@string/action_color"
         app:showAsAction="never" />
+    <item
+        android:id="@+id/action_clean"
+        android:orderInCategory="100"
+        android:title="Clean"
+        app:showAsAction="never" />
 </menu>
