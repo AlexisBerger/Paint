@@ -123,6 +123,7 @@ public abstract class ColorPicker extends Dialog {
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 alpha = seekBar.getProgress();
                 Canvas canvas = surface.getHolder().lockCanvas();
+                canvas.drawColor(Color.BLACK);
                 canvas.drawColor(Color.argb(alpha, red, green, bleu));
                 surface.getHolder().unlockCanvasAndPost(canvas);
                 onChange(alpha,red,green,bleu);
