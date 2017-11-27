@@ -9,6 +9,7 @@ import android.graphics.Paint;
 import android.graphics.Path;
 import android.util.Log;
 import android.view.MotionEvent;
+import android.view.ScaleGestureDetector;
 import android.view.View;
 
 import java.util.Stack;
@@ -20,7 +21,7 @@ import java.util.Stack;
 public class DrawingView extends View {
 
     public int width;
-    public  int height;
+    public int height;
     private Bitmap mBitmap;
     private Canvas mCanvas;
     private Path mPath;
@@ -33,9 +34,13 @@ public class DrawingView extends View {
     private Stack<Bitmap> undo;
     private Stack<Bitmap> redo;
 
+    private ScaleGestureDetector mScaleDetector;
+    private float mScaleFactor = 1.f;
+
+
     public DrawingView(Context c, Paint mPaint) {
         super(c);
-        context=c;
+        context = c;
         this.mPaint = mPaint;
         mPath = new Path();
         mBitmapPaint = new Paint(Paint.DITHER_FLAG);
@@ -48,10 +53,22 @@ public class DrawingView extends View {
         circlePaint.setStrokeWidth(4f);
 
         undo = new Stack<>();
-
         redo = new Stack<>();
 
+        mScaleDetector = new ScaleGestureDetector(context, new ScaleGestureDetector.SimpleOnScaleGestureListener() {
+            @Override
+            public boolean onScale(ScaleGestureDetector detector) {
+                mScaleFactor *= detector.getScaleFactor();
+
+                // Don't let the object get too small or too large.
+                mScaleFactor = Math.max(0.1f, Math.min(mScaleFactor, 5.0f));
+
+                invalidate();
+                return true;
+            }
+        });
     }
+
 
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
@@ -64,17 +81,17 @@ public class DrawingView extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-
-        canvas.drawBitmap( mBitmap, 0, 0, mBitmapPaint);
-        canvas.drawPath( mPath,  mPaint);
-        canvas.drawPath( circlePath,  circlePaint);
+        mPaint.setStrokeWidth(12 * mScaleFactor);
+        canvas.drawBitmap(mBitmap, 0, 0, mBitmapPaint);
+        canvas.drawPath(mPath, mPaint);
+        canvas.drawPath(circlePath, circlePaint);
     }
 
     private float mX, mY;
     private static final float TOUCH_TOLERANCE = 4;
 
     private void touch_start(float x, float y) {
-        if(undo.size() >= 10)
+        if (undo.size() >= 10)
             undo.removeElementAt(9);
         undo.push(Bitmap.createBitmap(mBitmap));
         mPath.reset();
@@ -87,7 +104,7 @@ public class DrawingView extends View {
         float dx = Math.abs(x - mX);
         float dy = Math.abs(y - mY);
         if (dx >= TOUCH_TOLERANCE || dy >= TOUCH_TOLERANCE) {
-            mPath.quadTo(mX, mY, (x + mX)/2, (y + mY)/2);
+            mPath.quadTo(mX, mY, (x + mX) / 2, (y + mY) / 2);
             mX = x;
             mY = y;
 
@@ -100,7 +117,7 @@ public class DrawingView extends View {
         mPath.lineTo(mX, mY);
         circlePath.reset();
         // commit the path to our offscreen
-        mCanvas.drawPath(mPath,  mPaint);
+        mCanvas.drawPath(mPath, mPaint);
 
         redo.removeAllElements();
 
@@ -114,28 +131,30 @@ public class DrawingView extends View {
         float x = event.getX();
         float y = event.getY();
 
-        switch (event.getAction()) {
-            case MotionEvent.ACTION_DOWN:
-                touch_start(x, y);
-                invalidate();
-                break;
-            case MotionEvent.ACTION_MOVE:
-                touch_move(x, y);
-                invalidate();
-                break;
-            case MotionEvent.ACTION_UP:
-                touch_up();
-                invalidate();
-                break;
-        }
+        mScaleDetector.onTouchEvent(event);
+        if (!mScaleDetector.isInProgress())
+            switch (event.getAction()) {
+                case MotionEvent.ACTION_DOWN:
+                    touch_start(x, y);
+                    invalidate();
+                    break;
+                case MotionEvent.ACTION_MOVE:
+                    touch_move(x, y);
+                    invalidate();
+                    break;
+                case MotionEvent.ACTION_UP:
+                    touch_up();
+                    invalidate();
+                    break;
+            }
         return true;
     }
 
-    public void undo(){
-        if(undo.empty())
+    public void undo() {
+        if (undo.empty())
             return;
         Bitmap p = undo.pop();
-        if(redo.size() >= 5)
+        if (redo.size() >= 5)
             redo.removeElementAt(4);
         redo.push(Bitmap.createBitmap(mBitmap));
         mBitmap = p;
@@ -143,17 +162,21 @@ public class DrawingView extends View {
         invalidate();
 
     }
-    public void redo(){
-        if(redo.empty())
+
+    public void redo() {
+        if (redo.empty())
             return;
         Bitmap p = redo.pop();
-        if(undo.size() >= 10)
+        if (undo.size() >= 10)
             undo.removeElementAt(9);
         undo.push(Bitmap.createBitmap(mBitmap));
         mBitmap = p;
         mCanvas = new Canvas(mBitmap);
         invalidate();
 
+    }
+    public Bitmap getMBitmap(){
+        return mBitmap;
     }
 
 }
