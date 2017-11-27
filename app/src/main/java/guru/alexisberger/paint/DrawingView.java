@@ -159,6 +159,11 @@ public class DrawingView extends View {
 
     public void clean(){
         mCanvas.drawColor(0, PorterDuff.Mode.CLEAR);
+
+    }
+
+    public void setBackground(int a, int r, int g, int b){
+        mCanvas.drawARGB(a,r,g,b);
     }
 
 }

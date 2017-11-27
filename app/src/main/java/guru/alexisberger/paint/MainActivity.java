@@ -19,6 +19,7 @@ public class MainActivity extends AppCompatActivity {
     private Paint mPaint;
     private DrawingView dv;
     private ColorPicker colorPicker;
+    public static final int SETTINGS = 100;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
-            startActivity(intent);
+            startActivityForResult(intent,SETTINGS);
             return true;
         }else if (id == R.id.action_undo) {
             dv.undo();
@@ -88,5 +89,14 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode==SETTINGS)
+        {
+            dv.setBackground(data.getIntExtra("alpha",0), data.getIntExtra("red",0), data.getIntExtra("green", 0), data.getIntExtra("bleu", 0));
+        }
     }
 }
