@@ -31,10 +31,10 @@ public class DrawingView extends View {
     Paint mPaint;
     private Paint circlePaint;
     private Path circlePath;
-    private int background_a;
-    private int background_r;
-    private int background_g;
-    private int background_b;
+    private int background_a = 255;
+    private int background_r = 255;
+    private int background_g = 255;
+    private int background_b = 255;
     private int color;
     private Stack<Bitmap> undo;
     private Stack<Bitmap> redo;
@@ -80,7 +80,14 @@ public class DrawingView extends View {
         super.onSizeChanged(w, h, oldw, oldh);
 
         mBitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
-        mCanvas = new Canvas(mBitmap);
+        if(mCanvas == null){
+            mCanvas = new Canvas(mBitmap);
+            mCanvas.drawARGB(255,255,255,255);
+        }else{
+            mCanvas = new Canvas(mBitmap);
+        }
+
+
     }
 
     @Override
@@ -185,7 +192,7 @@ public class DrawingView extends View {
     }
 
     public void clean(){
-        //mCanvas.drawColor(0, PorterDuff.Mode.CLEAR);
+        mCanvas.drawColor(0, PorterDuff.Mode.CLEAR);
         mCanvas.drawARGB(background_a, background_r, background_g, background_b);
     }
 

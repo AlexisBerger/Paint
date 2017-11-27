@@ -16,10 +16,10 @@ import java.net.URI;
 public class SettingsActivity extends AppCompatActivity {
 
     private ColorPicker colorPicker;
-    private int background_green = 0;
-    private int background_red = 0;
-    private int background_bleu = 0;
-    private int background_alpha = 0;
+    private int background_green = 255;
+    private int background_red = 255;
+    private int background_bleu = 255;
+    private int background_alpha = 255;
     private Intent intent;
 
     @Override
@@ -67,6 +67,11 @@ public class SettingsActivity extends AppCompatActivity {
 
             }
         };
+        colorPicker.setAlpha(255);
+        colorPicker.setBleu(255);
+        colorPicker.setGreen(255);
+        colorPicker.setRed(255);
+
         surfaceView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

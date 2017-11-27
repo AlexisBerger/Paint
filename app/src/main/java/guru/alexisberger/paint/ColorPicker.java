@@ -19,6 +19,7 @@ public abstract class ColorPicker extends Dialog {
     private int bleu = 0;
     private int alpha = 0;
 
+
     public ColorPicker(@NonNull Context context) {
         super(context);
         setContentView(R.layout.color_picker);
@@ -141,4 +142,36 @@ public abstract class ColorPicker extends Dialog {
         });
     }
     protected abstract void onChange(int a, int r, int g, int b);
+
+    public int getGreen() {
+        return green;
+    }
+
+    public void setGreen(int green) {
+        this.green = green;
+    }
+
+    public int getRed() {
+        return red;
+    }
+
+    public void setRed(int red) {
+        this.red = red;
+    }
+
+    public int getBleu() {
+        return bleu;
+    }
+
+    public void setBleu(int bleu) {
+        this.bleu = bleu;
+    }
+
+    public int getAlpha() {
+        return alpha;
+    }
+
+    public void setAlpha(int alpha) {
+        this.alpha = alpha;
+    }
 }
