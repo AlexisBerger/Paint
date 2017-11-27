@@ -48,6 +48,7 @@ public class DrawingView extends View {
         circlePaint.setStrokeWidth(4f);
 
         undo = new Stack<>();
+
         redo = new Stack<>();
 
     }
@@ -73,6 +74,8 @@ public class DrawingView extends View {
     private static final float TOUCH_TOLERANCE = 4;
 
     private void touch_start(float x, float y) {
+        if(undo.size() >= 10)
+            undo.removeElementAt(9);
         undo.push(Bitmap.createBitmap(mBitmap));
         mPath.reset();
         mPath.moveTo(x, y);
@@ -132,6 +135,8 @@ public class DrawingView extends View {
         if(undo.empty())
             return;
         Bitmap p = undo.pop();
+        if(redo.size() >= 5)
+            redo.removeElementAt(4);
         redo.push(Bitmap.createBitmap(mBitmap));
         mBitmap = p;
         mCanvas = new Canvas(mBitmap);
@@ -142,6 +147,8 @@ public class DrawingView extends View {
         if(redo.empty())
             return;
         Bitmap p = redo.pop();
+        if(undo.size() >= 10)
+            undo.removeElementAt(9);
         undo.push(Bitmap.createBitmap(mBitmap));
         mBitmap = p;
         mCanvas = new Canvas(mBitmap);
