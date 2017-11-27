@@ -72,7 +72,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="Bleu"
+            android:text="Blue"
             android:textAlignment="center"
             android:textSize="24sp"
             app:layout_constraintEnd_toStartOf="@+id/alpha"
@@ -80,7 +80,7 @@
             tools:layout_editor_absoluteY="163dp" />
 
         <SeekBar
-            android:id="@+id/bleu"
+            android:id="@+id/blue"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"

@@ -24,7 +24,7 @@ public abstract class ColorPicker extends Dialog {
         setContentView(R.layout.color_picker);
 
         SeekBar redSb = findViewById(R.id.red);
-        SeekBar blueSb = findViewById(R.id.bleu);
+        SeekBar blueSb = findViewById(R.id.blue);
         SeekBar greenSb = findViewById(R.id.green);
         SeekBar alphaSb = findViewById(R.id.alpha);
         redSb.setMax(255);
