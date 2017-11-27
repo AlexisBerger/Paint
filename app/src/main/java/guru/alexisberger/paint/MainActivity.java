@@ -7,6 +7,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -16,6 +17,7 @@ public class MainActivity extends AppCompatActivity {
 
     private Paint mPaint;
     private DrawingView dv;
+    private ColorPicker colorPicker;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +37,15 @@ public class MainActivity extends AppCompatActivity {
         mPaint.setStrokeWidth(12);
         dv = new DrawingView(this, mPaint);
         content.addView(dv);
+        colorPicker = new ColorPicker(this){
+
+            @Override
+            protected void onChange(int a, int r, int g, int b) {
+                Log.wtf("color", " "+a+" "+r+" "+g+" "+b);
+                mPaint.setARGB(a, r, g, b);
+
+            }
+        };
 
     }
 
@@ -60,6 +71,11 @@ public class MainActivity extends AppCompatActivity {
             return true;
         }else if (id == R.id.action_redo) {
             dv.redo();
+            return true;
+        }else if (id == R.id.action_color) {
+
+            colorPicker.show();
+
             return true;
         }
 
