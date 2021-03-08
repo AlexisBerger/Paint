@@ -4,5 +4,4 @@ addons:
     token:
       secure: "HfSafXY6kS2oGsVYMIUhFPzu83evf25MvU4G3vv2JhXRalbqah1aWQj1W0UdT7yM+X0EDJhOwkMRaXdqxejKluhLZeUFnzrEk54WfJ4S/YcFjcVQ2dN47T+9rH3Rf1ksLlpEge6cL8VELtl/2po5va+6V8Q7NAQvQCG7JiYR9J6yrX7t593dQ/lyZk+e7/YP47hS4l6/hXExVsneVWBVpdOb3nQGwi8INlo/GNWoexWaMZGHL7DW3E12wgatfgRvd0C0HKCjUHyRI1fpsYAjy/K5pgM0/ZQz2AYjaitSPLBitboLQNTbL1lnEOWwe4dfkPr2lmmenMh/lLhxcLJ2vfgWip6Ri4EjfN3253q4sL4ybz+ntC2m4PjDbZqIhRFA8Mg3Me3S3nH2kb2mDHpRpiwa8TrmPTUl2ri/FtyYNUs3qQkblZLb7WiC5KV0ZtSdZZav4B6nwiCVEHlBxksXgo0YuKkgF4c/6Q8xQ4dJFuZ/MjAKNuhHmogcGAWe7LhOxpVLcyOK8V+lB25q9Fn52g5NDR8pE4/+6dICTZERu126RD9w3mLGHSkscCLnzWS+TOGto8kaQC0bWzt49NzRonu0ZnS77er/+jMu0+AoSxe4ZUq5RYE//nJazdLdKbQMjZ/K6ylvWwboCGwVw7OW434kF6+Ok+C7fKvPCGR0mIY=" # encrypted value of your token
 script:
-  # other script steps might be done before running the actual analysis
-  - sonar-scanner
+  - ./gradlew sonarqube
